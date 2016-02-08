@@ -17,20 +17,13 @@ var zack = require('zack');
 // Setup zack with how your application does transactions
 var transact = zack({
     create: function(callback){
-        t.ok('create called');
-        callback(null, {
-            foo: 'bar'
-        });
+        db.makeATransaction(callback);
     },
     commit: function(transaction, callback){
-        t.ok('commit called');
-        transaction.commited = true;
-        callback();
+        db.commit(transaction, callback);
     },
     rollback: function(transaction, callback){
-        t.fail('rollback called');
-        transaction.rolledBack = true;
-        callback();
+        db.rollback(transaction, callback);
     }
 });
 
@@ -41,7 +34,6 @@ var doThing = transact(function(transaction, a, b, callback){
 
 // call the task, transactions are automatically handled.
 doThing(10, 20, function(error, result){
-    t.notOk(error, 'No error');
-    t.equal(result, 30, 'Correct result');
+    // etc...
 });
 ```
